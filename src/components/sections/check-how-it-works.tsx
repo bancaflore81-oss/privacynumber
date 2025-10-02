@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useAuth } from '@/contexts/auth-context'
+import { getCountryFlag } from '@/lib/country-flags'
 
 interface Country {
   id: string
@@ -149,7 +149,7 @@ export function CheckHowItWorks() {
                     <SelectContent>
                       {countries.map((country) => (
                         <SelectItem key={country.id} value={country.id}>
-                          {country.name}
+                          {getCountryFlag(country.id)} {country.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -212,7 +212,7 @@ export function CheckHowItWorks() {
                   <tbody>
                     {countries.slice(0, 10).map((country) => (
                       <tr key={country.id} className="border-b hover:bg-muted/50">
-                        <td className="py-3 px-4">{country.name}</td>
+                        <td className="py-3 px-4">{getCountryFlag(country.id)} {country.name}</td>
                         <td className="py-3 px-4">+{country.id}</td>
                         <td className="py-3 px-4 text-right">$0.15</td>
                       </tr>

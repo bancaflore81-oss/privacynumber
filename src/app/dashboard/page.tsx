@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Smartphone, DollarSign, Clock, CheckCircle, XCircle } from 'lucide-react'
+import { getCountryFlag } from '@/lib/country-flags'
 
 interface SmsRequest {
   id: string
@@ -238,7 +238,7 @@ export default function DashboardPage() {
                             {request.phoneNumber || 'Number pending...'}
                           </p>
                           <p className="text-sm text-gray-600">
-                            Service: {request.serviceId} | Country: {request.countryId}
+                            Service: {request.serviceId} | Country: {getCountryFlag(request.countryId)} {request.countryId}
                           </p>
                           <p className="text-xs text-gray-500">
                             Created: {new Date(request.createdAt).toLocaleString()}

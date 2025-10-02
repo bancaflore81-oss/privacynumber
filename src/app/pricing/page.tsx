@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { getCountryFlag } from '@/lib/country-flags'
 import { DollarSign, Globe, Clock } from 'lucide-react'
 
 interface Price {
@@ -157,7 +157,7 @@ export default function PricingPage() {
                   <SelectContent>
                     {countries.map((country) => (
                       <SelectItem key={country.id} value={country.id}>
-                        {country.name}
+                        {getCountryFlag(country.id)} {country.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
