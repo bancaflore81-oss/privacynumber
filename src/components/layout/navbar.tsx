@@ -23,10 +23,22 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link href="/" className="text-gray-700 hover:text-primary transition-colors">
-              Home
+              SMS Online
             </Link>
             <Link href="/pricing" className="text-gray-700 hover:text-primary transition-colors">
-              Pricing
+              Rent
+            </Link>
+            <Link href="/api" className="text-gray-700 hover:text-primary transition-colors">
+              API Connection
+            </Link>
+            <Link href="/proxy" className="text-gray-700 hover:text-primary transition-colors">
+              Proxy
+            </Link>
+            <Link href="/blog" className="text-gray-700 hover:text-primary transition-colors">
+              Blog
+            </Link>
+            <Link href="/help" className="text-gray-700 hover:text-primary transition-colors">
+              Help
             </Link>
             {user ? (
               <>
@@ -50,10 +62,10 @@ export function Navbar() {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link href="/auth/login">
-                  <Button variant="outline">Login</Button>
+                  <Button variant="outline">Log In</Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button>Get Started</Button>
+                  <Button>Sign Up</Button>
                 </Link>
               </div>
             )}
@@ -76,10 +88,22 @@ export function Navbar() {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t">
               <Link href="/" className="block px-3 py-2 text-gray-700 hover:text-primary">
-                Home
+                SMS Online
               </Link>
               <Link href="/pricing" className="block px-3 py-2 text-gray-700 hover:text-primary">
-                Pricing
+                Rent
+              </Link>
+              <Link href="/api" className="block px-3 py-2 text-gray-700 hover:text-primary">
+                API Connection
+              </Link>
+              <Link href="/proxy" className="block px-3 py-2 text-gray-700 hover:text-primary">
+                Proxy
+              </Link>
+              <Link href="/blog" className="block px-3 py-2 text-gray-700 hover:text-primary">
+                Blog
+              </Link>
+              <Link href="/help" className="block px-3 py-2 text-gray-700 hover:text-primary">
+                Help
               </Link>
               {user ? (
                 <>
@@ -100,10 +124,10 @@ export function Navbar() {
               ) : (
                 <div className="space-y-2">
                   <Link href="/auth/login" className="block">
-                    <Button variant="outline" className="w-full">Login</Button>
+                    <Button variant="outline" className="w-full">Log In</Button>
                   </Link>
                   <Link href="/auth/register" className="block">
-                    <Button className="w-full">Get Started</Button>
+                    <Button className="w-full">Sign Up</Button>
                   </Link>
                 </div>
               )}

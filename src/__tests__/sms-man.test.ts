@@ -2,7 +2,7 @@ import { SmsManAPI } from '../lib/sms-man'
 
 // Mock axios
 jest.mock('axios')
-const axios = require('axios')
+import axios from 'axios'
 
 describe('SmsManAPI', () => {
   let smsManAPI: SmsManAPI
