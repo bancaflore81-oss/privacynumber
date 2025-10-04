@@ -8,17 +8,19 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-https://www.privatenumber.org}
       - SMS_MAN_API_KEY=${SMS_MAN_API_KEY}
-      - SMS_MAN_BASE_URL=${SMS_MAN_BASE_URL}
+      - SMS_MAN_BASE_URL=${SMS_MAN_BASE_URL:-https://sms-man.com/api}
+      - NODE_ENV=production
     depends_on:
       - db
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 40s
 
   db:
     image: postgres:15-alpine

@@ -1,12 +1,31 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useAuth } from '@/contexts/auth-context'
 import { getCountryFlag } from '@/lib/country-flags'
+
+// Helper function to get service icon
+const getServiceIcon = (serviceId: string) => {
+  const icons: { [key: string]: string } = {
+    'telegram': '📱',
+    'whatsapp': '💬',
+    'facebook': '📘',
+    'instagram': '📷',
+    'twitter': '🐦',
+    'google': '🔍',
+    'microsoft': '🪟',
+    'apple': '🍎',
+    'amazon': '📦',
+    'uber': '🚗',
+    'default': '📞'
+  }
+  return icons[serviceId.toLowerCase()] || icons.default
+}
 
 interface Country {
   id: string
@@ -114,115 +133,125 @@ export function CheckHowItWorks() {
   }
 
   return (
-    <section className="py-16 bg-card">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-16">
+      <div className="container">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-4">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
             Check how it works!
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-gray-600">
             Select your country and service to get started
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto">
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Get Your Number</CardTitle>
-              <CardDescription>
-                Choose your country and service to receive SMS
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {error && (
-                <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-md text-sm mb-6">
-                  {error}
-                </div>
-              )}
+        <div className="max-w-4xl mx-auto">
+          <div className="card">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              Get Your Number
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Choose your country and service to receive SMS
+            </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="space-y-2">
-                  <Label htmlFor="country">Country</Label>
-                  <Select value={selectedCountry} onValueChange={setSelectedCountry}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a country" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {countries.map((country) => (
-                        <SelectItem key={country.id} value={country.id}>
-                          {getCountryFlag(country.id)} {country.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="service">Service</Label>
-                  <Select value={selectedService} onValueChange={setSelectedService}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a service" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {services.map((service) => (
-                        <SelectItem key={service.id} value={service.id}>
-                          {service.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm mb-6">
+                {error}
               </div>
+            )}
 
-              <Button 
-                className="w-full" 
-                size="lg" 
-                onClick={handleGetNumber}
-                disabled={loading || !user}
-              >
-                {loading ? 'Getting Number...' : 'Get Number'}
-              </Button>
-
-              {!user && (
-                <p className="text-sm text-muted-foreground text-center mt-4">
-                  <a href="/auth/login" className="text-primary hover:underline">Login</a> or{' '}
-                  <a href="/auth/register" className="text-primary hover:underline">Sign Up</a> to get started
-                </p>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Countries Table */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Available Countries</CardTitle>
-              <CardDescription>
-                Choose from our extensive list of supported countries
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-3 px-4 font-medium">Country</th>
-                      <th className="text-left py-3 px-4 font-medium">Code</th>
-                      <th className="text-right py-3 px-4 font-medium">Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {countries.slice(0, 10).map((country) => (
-                      <tr key={country.id} className="border-b hover:bg-muted/50">
-                        <td className="py-3 px-4">{getCountryFlag(country.id)} {country.name}</td>
-                        <td className="py-3 px-4">+{country.id}</td>
-                        <td className="py-3 px-4 text-right">$0.15</td>
-                      </tr>
+            <div className="form-row">
+              <div className="form-field">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Country
+                </label>
+                <Select value={selectedCountry} onValueChange={setSelectedCountry}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {countries.map((country) => (
+                      <SelectItem key={country.id} value={country.id}>
+                        {getCountryFlag(country.id)} {country.name}
+                      </SelectItem>
                     ))}
-                  </tbody>
-                </table>
+                  </SelectContent>
+                </Select>
               </div>
-            </CardContent>
-          </Card>
+
+              <div className="form-field">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Service
+                </label>
+                <Select value={selectedService} onValueChange={setSelectedService}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a service" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {services.map((service) => (
+                      <SelectItem key={service.id} value={service.id}>
+                        {getServiceIcon(service.id)} {service.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <button
+              onClick={handleGetNumber}
+              disabled={!selectedCountry || !selectedService || loading}
+              className="btn btn-primary btn-full"
+            >
+              {loading ? 'Getting Number...' : 'Get Number'}
+            </button>
+
+            {!user && (
+              <div className="login-prompt">
+                <p>
+                  <Link href="/auth/login" className="text-blue-600 hover:underline">
+                    Login
+                  </Link>{" "}
+                  or{" "}
+                  <Link href="/auth/register" className="text-blue-600 hover:underline">
+                    Sign Up
+                  </Link>{" "}
+                  to get started
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="card">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              Available Countries
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Choose from our extensive list of supported countries
+            </p>
+
+            <div className="overflow-x-auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Country</th>
+                    <th>Code</th>
+                    <th style={{textAlign: 'right'}}>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {countries.slice(0, 10).map((country) => (
+                    <tr key={country.id}>
+                      <td>{getCountryFlag(country.id)} {country.name}</td>
+                      <td>+{country.id}</td>
+                      <td style={{textAlign: 'right', fontWeight: '600', color: '#059669'}}>
+                        $0.15
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </section>
