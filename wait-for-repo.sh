@@ -81,7 +81,7 @@ wait_and_retry() {
     print_header "Waiting for Repository to be Created"
     echo ""
     
-    print_info "Checking if repository 'bancaflore81-oss/sms-man-clone' exists..."
+    print_info "Checking if repository 'bancaflore81-oss/privacynumber' exists..."
     print_info "Please create the repository on GitHub if you haven't already"
     echo ""
     
@@ -106,7 +106,7 @@ wait_and_retry() {
     print_info "Please make sure you've created the repository on GitHub:"
     print_info "1. Go to GitHub.com"
     print_info "2. Click '+' → 'New repository'"
-    print_info "3. Name: 'sms-man-clone'"
+    print_info "3. Name: 'privacynumber'"
     print_info "4. Owner: 'bancaflore81-oss'"
     print_info "5. Create repository"
     print_info "6. Run this script again"

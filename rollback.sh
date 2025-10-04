@@ -92,13 +92,13 @@ rollback_to_tag() {
     git checkout "$tag"
     
     # Set environment variables (same as production)
-    export DATABASE_URL="${DATABASE_URL:-postgresql://postgres:password@db:5432/sms-man-clone}"
+    export DATABASE_URL="${DATABASE_URL:-postgresql://postgres:password@db:5432/privacynumber}"
     export SMS_MAN_API_KEY="${SMS_MAN_API_KEY}"
     export NEXTAUTH_SECRET="${NEXTAUTH_SECRET}"
     export NEXTAUTH_URL="${NEXTAUTH_URL:-https://www.privatenumber.org}"
     export POSTGRES_USER="${POSTGRES_USER:-postgres}"
     export POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
-    export POSTGRES_DB="${POSTGRES_DB:-sms-man-clone}"
+    export POSTGRES_DB="${POSTGRES_DB:-privacynumber}"
     export NODE_ENV="production"
     
     # Deploy the rolled back version
