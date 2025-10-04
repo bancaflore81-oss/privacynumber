@@ -1,0 +1,11 @@
+=== REPORT RESTORE IMMAGINI VECCHIE SMS-MAN CLONE ===
+Data: Sat Oct  4 04:29:21 PM UTC 2025
+Cartella sorgente: /home/sms-man-clone/frontend/public/IMMAGINI_VECCHIE
+
+RISULTATI:
+- Totale immagini elaborate: 26
+- Immagini collocate nelle posizioni originali: 0
+- Immagini inserite in missing-images: 26
+- Log dettagliato: /home/sms-man-clone/frontend/image-restore-log-vecchie.csv
+
+OPERAZIONE COMPLETATA CON SUCCESSO!

@@ -43,6 +43,17 @@ const userSchema = new mongoose.Schema({
   emailVerificationExpires: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  // Social login fields
+  googleId: String,
+  facebookId: String,
+  twitterId: String,
+  telegramId: String,
+  provider: {
+    type: String,
+    enum: ['local', 'google', 'facebook', 'twitter', 'telegram'],
+    default: 'local'
+  },
+  avatar: String,
   refreshTokens: [{
     token: String,
     createdAt: {

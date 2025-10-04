@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
+const passport = require('passport');
 const User = require('../models/User');
 const { authenticateToken } = require('../middleware/auth');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../utils/email');
@@ -621,6 +622,155 @@ router.post('/reset-password', [
     res.status(500).json({
       success: false,
       message: 'Password reset failed'
+    });
+  }
+});
+
+// Social Login Routes
+
+// Google OAuth Routes
+router.get('/google', passport.authenticate('google', {
+  scope: ['profile', 'email']
+}));
+
+router.get('/google/callback', 
+  passport.authenticate('google', { session: false }),
+  async (req, res) => {
+    try {
+      const user = req.user;
+      const token = generateToken(user._id);
+      const refreshToken = generateRefreshToken();
+      
+      // Add refresh token to user
+      user.refreshTokens.push({ token: refreshToken });
+      await user.save();
+      
+      res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}&refresh=${refreshToken}`);
+    } catch (error) {
+      console.error('Google callback error:', error);
+      res.redirect(`${process.env.FRONTEND_URL}/auth/callback?error=authentication_failed`);
+    }
+  }
+);
+
+// Facebook OAuth Routes
+router.get('/facebook', passport.authenticate('facebook', {
+  scope: ['email']
+}));
+
+router.get('/facebook/callback',
+  passport.authenticate('facebook', { session: false }),
+  async (req, res) => {
+    try {
+      const user = req.user;
+      const token = generateToken(user._id);
+      const refreshToken = generateRefreshToken();
+      
+      // Add refresh token to user
+      user.refreshTokens.push({ token: refreshToken });
+      await user.save();
+      
+      res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}&refresh=${refreshToken}`);
+    } catch (error) {
+      console.error('Facebook callback error:', error);
+      res.redirect(`${process.env.FRONTEND_URL}/auth/callback?error=authentication_failed`);
+    }
+  }
+);
+
+// Twitter OAuth Routes
+router.get('/twitter', passport.authenticate('twitter'));
+
+router.get('/twitter/callback',
+  passport.authenticate('twitter', { session: false }),
+  async (req, res) => {
+    try {
+      const user = req.user;
+      const token = generateToken(user._id);
+      const refreshToken = generateRefreshToken();
+      
+      // Add refresh token to user
+      user.refreshTokens.push({ token: refreshToken });
+      await user.save();
+      
+      res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}&refresh=${refreshToken}`);
+    } catch (error) {
+      console.error('Twitter callback error:', error);
+      res.redirect(`${process.env.FRONTEND_URL}/auth/callback?error=authentication_failed`);
+    }
+  }
+);
+
+// Telegram Web App Authentication
+router.post('/telegram', async (req, res) => {
+  try {
+    const { id, first_name, last_name, username, photo_url, auth_date, hash } = req.body;
+    
+    // Verify Telegram authentication (simplified - in production, verify hash)
+    if (!id || !first_name || !auth_date) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid Telegram authentication data'
+      });
+    }
+    
+    // Check if user already exists
+    let user = await User.findOne({ 
+      $or: [
+        { telegramId: id.toString() },
+        { email: `${username}@telegram.com` }
+      ]
+    });
+
+    if (user) {
+      // Update Telegram ID if not set
+      if (!user.telegramId) {
+        user.telegramId = id.toString();
+        await user.save();
+      }
+    } else {
+      // Create new user
+      user = new User({
+        telegramId: id.toString(),
+        email: `${username}@telegram.com`,
+        firstName: first_name,
+        lastName: last_name || '',
+        avatar: photo_url,
+        isEmailVerified: true,
+        provider: 'telegram'
+      });
+
+      await user.save();
+    }
+    
+    const token = generateToken(user._id);
+    const refreshToken = generateRefreshToken();
+    
+    // Add refresh token to user
+    user.refreshTokens.push({ token: refreshToken });
+    await user.save();
+    
+    res.json({
+      success: true,
+      message: 'Telegram authentication successful',
+      data: {
+        token,
+        refreshToken,
+        user: {
+          id: user._id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          avatar: user.avatar,
+          provider: user.provider
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Telegram authentication error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Telegram authentication failed'
     });
   }
 });
