@@ -1,0 +1,20 @@
+{
+  "name": "sms-man-clone",
+  "version": "1.0.0",
+  "description": "Complete SMS-Man.com replica with all features and APIs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": ["sms", "verification", "api", "react", "nodejs"],
+  "author": "SMS-Man Clone",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
