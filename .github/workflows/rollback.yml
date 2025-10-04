@@ -1,0 +1,100 @@
+name: Rollback Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_tag:
+        description: 'Deployment tag to rollback to'
+        required: true
+        type: string
+      confirm_rollback:
+        description: 'Type "ROLLBACK" to confirm'
+        required: true
+        type: string
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm_rollback == 'ROLLBACK'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for tags
+
+    - name: Verify deployment tag exists
+      run: |
+        TAG="${{ github.event.inputs.deployment_tag }}"
+        if ! git tag -l | grep -q "^$TAG$"; then
+          echo "❌ Tag '$TAG' does not exist"
+          echo "Available deployment tags:"
+          git tag -l "deploy-*" | sort -V -r | head -10
+          exit 1
+        fi
+        echo "✅ Tag '$TAG' found"
+
+    - name: Rollback to specified deployment
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.PRODUCTION_HOST }}
+        username: ${{ secrets.PRODUCTION_USER }}
+        key: ${{ secrets.PRODUCTION_SSH_KEY }}
+        script: |
+          cd /home/privacynumber
+          
+          TAG="${{ github.event.inputs.deployment_tag }}"
+          
+          echo "🔄 Starting rollback to tag: $TAG"
+          
+          # Create backup of current state
+          echo "📦 Creating backup of current state..."
+          BACKUP_DIR=".rollback-backup-$(date +%Y%m%d-%H%M%S)"
+          mkdir -p "$BACKUP_DIR"
+          cp -r . "$BACKUP_DIR/" 2>/dev/null || true
+          echo "✅ Backup created: $BACKUP_DIR"
+          
+          # Fetch latest tags
+          git fetch origin --tags
+          
+          # Checkout the specified tag
+          echo "🔍 Checking out tag: $TAG"
+          git checkout "$TAG"
+          
+          # Set environment variables
+          export DATABASE_URL="${{ secrets.DATABASE_URL }}"
+          export SMS_MAN_API_KEY="${{ secrets.SMS_MAN_API_KEY }}"
+          export NEXTAUTH_SECRET="${{ secrets.NEXTAUTH_SECRET }}"
+          export NEXTAUTH_URL="${{ secrets.NEXTAUTH_URL }}"
+          export POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
+          export POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
+          export POSTGRES_DB="${{ secrets.POSTGRES_DB }}"
+          export NODE_ENV="production"
+          
+          # Deploy the rolled back version
+          echo "🚀 Deploying rolled back version..."
+          chmod +x deploy-production.sh
+          ./deploy-production.sh
+          
+          # Verify deployment
+          echo "✅ Verifying rollback deployment..."
+          chmod +x verify-deployment.sh
+          ./verify-deployment.sh
+          
+          echo "🎉 Rollback completed successfully!"
+          echo "📍 Application rolled back to: $TAG"
+
+    - name: Notify rollback status
+      if: always()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow
+        text: |
+          Rollback ${{ job.status }}!
+          Tag: ${{ github.event.inputs.deployment_tag }}
+          Repository: ${{ github.repository }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
