@@ -1,296 +1,270 @@
-# SMS-Man Clone
+# 🔐 **SMS-Man Clone with Social Login System**
 
-A complete replica of SMS-Man.com with all features, design, APIs, and authentication systems.
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/bancaflore81-oss/sms-man-clone)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/node.js-20.x-green.svg)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/react-18.x-blue.svg)](https://reactjs.org/)
+[![MongoDB](https://img.shields.io/badge/mongodb-6.0-green.svg)](https://mongodb.com/)
 
-## 🚀 Features
+> **Complete SMS management platform with OAuth social authentication**
 
-### Core Functionality
-- **SMS Verification Service** - Receive SMS online from 200+ countries
-- **Phone Number Rental** - Temporary numbers for verification
-- **API Integration** - Complete REST API for developers
-- **Multi-language Support** - English, Russian, Chinese
-- **Real-time SMS Delivery** - Instant SMS reception
+## 🚀 **Features**
 
-### Authentication & Security
-- **JWT Authentication** - Secure token-based auth
-- **Social Login** - GitHub, Google, Facebook, Twitter, Telegram
-- **Email Verification** - Secure account activation
-- **Password Reset** - Secure password recovery
-- **Rate Limiting** - API protection
-- **Input Validation** - XSS and injection protection
+### 🔐 **Social Authentication**
+- **Google OAuth 2.0** - One-click Google sign-in
+- **Facebook Login** - Social authentication
+- **Twitter OAuth** - Twitter integration
+- **Telegram Web App** - Telegram bot authentication
+- **JWT Tokens** - Secure session management
+- **Refresh Tokens** - Persistent authentication
 
-### Payment System
-- **Multiple Payment Methods** - Credit cards, PayPal, Cryptocurrency
-- **Stripe Integration** - Secure card processing
-- **PayPal Support** - Alternative payment option
-- **Crypto Payments** - Bitcoin, Ethereum, Litecoin, USDT
-- **Balance Management** - Real-time balance tracking
+### 🛠️ **Technical Stack**
+- **Backend**: Node.js + Express + MongoDB
+- **Frontend**: React + TypeScript + Tailwind CSS
+- **Authentication**: Passport.js + JWT
+- **Database**: MongoDB with Docker
+- **API**: RESTful API with comprehensive endpoints
 
-### Admin Panel
-- **User Management** - Complete user administration
-- **Service Management** - Country and application management
-- **Analytics Dashboard** - Usage statistics and reports
-- **Price Management** - Dynamic pricing control
-- **System Monitoring** - Health checks and logs
+### 📱 **SMS Management**
+- **Temporary Numbers** - Receive SMS online
+- **Multi-Country Support** - Global coverage
+- **API Integration** - Developer-friendly
+- **Real-time Updates** - Live SMS notifications
+- **User Dashboard** - Complete management interface
 
-## 🛠 Tech Stack
+## 🏗️ **Architecture**
 
-### Frontend
-- **React 18** - Modern UI framework
-- **TypeScript** - Type-safe development
-- **Tailwind CSS** - Utility-first styling
-- **React Router** - Client-side routing
-- **React Hook Form** - Form management
-- **Axios** - HTTP client
-- **Lucide React** - Icon library
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   React Frontend │    │  Node.js Backend │    │   MongoDB DB    │
+│                 │    │                 │    │                 │
+│  • Social Login │◄──►│  • Passport.js  │◄──►│  • User Data    │
+│  • Dashboard    │    │  • JWT Auth     │    │  • SMS History  │
+│  • API Client   │    │  • OAuth Routes │    │  • Sessions     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
 
-### Backend
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web framework
-- **MongoDB** - NoSQL database
-- **Mongoose** - ODM for MongoDB
-- **JWT** - Authentication tokens
-- **bcryptjs** - Password hashing
-- **Nodemailer** - Email service
-- **Swagger** - API documentation
+## 🚀 **Quick Start**
 
-### Infrastructure
-- **Docker** - Containerization
-- **Docker Compose** - Multi-container orchestration
-- **Nginx** - Reverse proxy
-- **MongoDB** - Database
-- **Redis** - Caching and sessions
-
-## 📦 Installation
-
-### Prerequisites
-- Node.js 18+
-- Docker & Docker Compose
+### **Prerequisites**
+- Node.js 20.x+
+- MongoDB 6.0+
 - Git
 
-### Quick Start
+### **1. Clone Repository**
+```bash
+git clone https://github.com/bancaflore81-oss/sms-man-clone.git
+cd sms-man-clone
+```
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd sms-man-clone
-   ```
+### **2. Backend Setup**
+```bash
+cd backend
+npm install
+cp env.example .env
+# Configure your environment variables
+npm start
+```
 
-2. **Install dependencies**
-   ```bash
-   npm run install-all
-   ```
+### **3. Frontend Setup**
+```bash
+cd frontend
+npm install
+npm start
+```
 
-3. **Environment Setup**
-   ```bash
-   # Copy environment files
-   cp backend/env.example backend/.env
-   
-   # Edit backend/.env with your configuration
-   nano backend/.env
-   ```
+### **4. Database Setup**
+```bash
+# Using Docker
+docker run -d --name mongodb -p 27017:27017 mongo:6.0
 
-4. **Start with Docker**
-   ```bash
-   docker-compose up -d
-   ```
+# Or install MongoDB locally
+```
 
-5. **Or start development servers**
-   ```bash
-   # Terminal 1 - Backend
-   cd backend && npm run dev
-   
-   # Terminal 2 - Frontend
-   cd frontend && npm start
-   ```
+## ⚙️ **Configuration**
 
-6. **Access the application**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
-   - API Docs: http://localhost:5000/api-docs
+### **Environment Variables**
 
-## 🔧 Configuration
-
-### Environment Variables
-
-#### Backend (.env)
+#### **Backend (.env)**
 ```env
 # Database
 MONGODB_URI=mongodb://localhost:27017/sms-man-clone
-DB_NAME=sms-man-clone
 
 # JWT
-JWT_SECRET=your-super-secret-jwt-key-here
+JWT_SECRET=your-super-secret-jwt-key
 JWT_EXPIRE=7d
-REFRESH_TOKEN_SECRET=your-refresh-token-secret-here
+REFRESH_TOKEN_SECRET=your-refresh-token-secret
+
+# OAuth Providers
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+FACEBOOK_APP_ID=your-facebook-app-id
+FACEBOOK_APP_SECRET=your-facebook-app-secret
+TWITTER_CONSUMER_KEY=your-twitter-consumer-key
+TWITTER_CONSUMER_SECRET=your-twitter-consumer-secret
 
 # Server
 PORT=5000
-NODE_ENV=development
-
-# Email
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
-FROM_EMAIL=noreply@sms-man-clone.com
-FROM_NAME=SMS-Man Clone
-
-# Payment
-STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
-STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
-PAYPAL_CLIENT_ID=your_paypal_client_id
-PAYPAL_CLIENT_SECRET=your_paypal_client_secret
-PAYPAL_MODE=sandbox
-
-# Security
-BCRYPT_ROUNDS=12
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX_REQUESTS=100
-
-# Frontend
 FRONTEND_URL=http://localhost:3000
-API_BASE_URL=http://localhost:5000/api
 ```
 
-#### Frontend (.env)
+#### **Frontend (.env.local)**
 ```env
 REACT_APP_API_URL=http://localhost:5000/api
 ```
 
-## 📚 API Documentation
+## 🔧 **OAuth Setup**
 
-### Authentication Endpoints
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `POST /api/auth/refresh` - Refresh token
-- `POST /api/auth/logout` - User logout
-- `GET /api/auth/me` - Get user profile
-- `POST /api/auth/verify-email` - Verify email
-- `POST /api/auth/forgot-password` - Request password reset
-- `POST /api/auth/reset-password` - Reset password
+### **Google OAuth**
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Create a new project
+3. Enable Google+ API
+4. Create OAuth 2.0 credentials
+5. Add redirect URI: `http://localhost:5000/api/auth/google/callback`
 
-### Control API (SMS-Man Compatible)
-- `GET /api/control/get-balance` - Get user balance
-- `GET /api/control/limits` - Get available numbers
-- `GET /api/control/get-number` - Request phone number
-- `GET /api/control/get-sms` - Get SMS code
-- `POST /api/control/set-status` - Change request status
-- `GET /api/control/get-prices` - Get pricing
-- `GET /api/control/countries` - Get countries
-- `GET /api/control/applications` - Get applications
+### **Facebook Login**
+1. Go to [Facebook Developers](https://developers.facebook.com)
+2. Create a new app
+3. Add Facebook Login product
+4. Configure OAuth redirect URI: `http://localhost:5000/api/auth/facebook/callback`
 
-### User Management
-- `PUT /api/user/profile` - Update profile
-- `POST /api/user/change-password` - Change password
-- `GET /api/user/balance` - Get balance
-- `GET /api/user/transactions` - Get transactions
-- `GET /api/user/numbers` - Get number requests
-- `GET /api/user/api-key` - Get API key
-- `POST /api/user/api-key` - Regenerate API key
+### **Twitter OAuth**
+1. Go to [Twitter Developer Portal](https://developer.twitter.com)
+2. Create a new app
+3. Enable OAuth 2.0
+4. Set callback URL: `http://localhost:5000/api/auth/twitter/callback`
 
-### Payment System
-- `GET /api/payment/methods` - Get payment methods
-- `POST /api/payment/stripe/create-payment-intent` - Create Stripe payment
-- `POST /api/payment/stripe/confirm-payment` - Confirm Stripe payment
-- `POST /api/payment/paypal/create-payment` - Create PayPal payment
-- `POST /api/payment/paypal/execute-payment` - Execute PayPal payment
-- `POST /api/payment/crypto/generate-address` - Generate crypto address
-- `POST /api/payment/crypto/check-payment` - Check crypto payment
+### **Telegram Web App**
+1. Create bot with [@BotFather](https://t.me/botfather)
+2. Configure Web App URL
+3. Bot will be available for authentication
 
-## 🎨 Design Features
+## 📚 **API Documentation**
 
-### Homepage Sections
-1. **Hero Section** - Main value proposition
-2. **Country & Service Selection** - Interactive selection
-3. **Popular Services** - Service showcase
-4. **Value Proposition** - Privacy benefits
-5. **How It Works** - 3-step process
-6. **Comparison Table** - Pricing plans
-7. **Features** - Key benefits
-8. **Professional Solutions** - API information
-9. **FAQ** - Common questions
-
-### UI/UX Features
-- **Responsive Design** - Mobile-first approach
-- **Dark/Light Theme** - User preference
-- **Multi-language** - EN/RU/中文 support
-- **Modern UI** - Clean, professional design
-- **Accessibility** - WCAG compliant
-- **Performance** - Optimized loading
-
-## 🔒 Security Features
-
-- **JWT Authentication** - Secure token system
-- **Password Hashing** - bcrypt with salt rounds
-- **Rate Limiting** - API protection
-- **Input Validation** - XSS and injection prevention
-- **CORS Configuration** - Cross-origin protection
-- **Helmet.js** - Security headers
-- **API Key Encryption** - Secure API access
-- **Request Logging** - Audit trail
-
-## 🚀 Deployment
-
-### Docker Deployment
-```bash
-# Build and start all services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
+### **Authentication Endpoints**
+```http
+POST /api/auth/register     # User registration
+POST /api/auth/login        # User login
+POST /api/auth/refresh      # Refresh token
+GET  /api/auth/google       # Google OAuth
+GET  /api/auth/facebook     # Facebook OAuth
+GET  /api/auth/twitter      # Twitter OAuth
+POST /api/auth/telegram     # Telegram auth
 ```
 
-### Production Deployment
-1. **Configure environment variables**
-2. **Set up SSL certificates**
-3. **Configure domain names**
-4. **Set up monitoring**
-5. **Configure backups**
+### **SMS Endpoints**
+```http
+GET  /api/sms/numbers       # Get available numbers
+POST /api/sms/rent          # Rent a number
+GET  /api/sms/messages      # Get messages
+POST /api/sms/send          # Send SMS
+```
 
-## 📊 Monitoring
+## 🎨 **Frontend Components**
 
-### Health Checks
-- **API Health** - `/api/health`
-- **Database Status** - MongoDB connection
-- **Service Status** - All services monitoring
+### **Pages**
+- **HomePage** - Landing page with features
+- **LoginPage** - Social login interface
+- **SignupPage** - Registration with OAuth
+- **DashboardPage** - User management panel
+- **ProfilePage** - User profile settings
 
-### Logging
-- **Request Logs** - API request tracking
-- **Error Logs** - Error monitoring
-- **Security Logs** - Security event tracking
+### **Components**
+- **Header** - Navigation with logo
+- **Layout** - Main layout wrapper
+- **ProtectedRoute** - Authentication guard
+- **AuthCallbackPage** - OAuth callback handler
 
-## 🤝 Contributing
+## 🚀 **Deployment**
+
+### **Production Build**
+```bash
+# Frontend
+cd frontend
+npm run build
+
+# Backend
+cd backend
+npm start
+```
+
+### **Docker Deployment**
+```bash
+# Build and run with Docker Compose
+docker-compose up -d
+```
+
+### **Environment Setup**
+- Configure production environment variables
+- Set up SSL certificates
+- Configure domain names
+- Set up monitoring
+
+## 📊 **Monitoring & Logs**
+
+### **Backend Logs**
+```bash
+# View application logs
+journalctl -u privacynumber-app -f
+
+# View error logs
+journalctl -u privacynumber-app --priority=err
+```
+
+### **Database Monitoring**
+```bash
+# MongoDB logs
+docker logs mongodb
+
+# Database stats
+mongo --eval "db.stats()"
+```
+
+## 🔒 **Security Features**
+
+- **JWT Authentication** - Secure token-based auth
+- **Password Hashing** - Bcrypt encryption
+- **Rate Limiting** - API protection
+- **CORS Configuration** - Cross-origin security
+- **Input Validation** - Data sanitization
+- **SQL Injection Protection** - MongoDB security
+
+## 🤝 **Contributing**
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests
+4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 License
+## 📄 **License**
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## 📞 **Support**
 
-For support and questions:
+- **Issues**: [GitHub Issues](https://github.com/bancaflore81-oss/sms-man-clone/issues)
+- **Documentation**: [Wiki](https://github.com/bancaflore81-oss/sms-man-clone/wiki)
 - **Email**: support@sms-man-clone.com
-- **Documentation**: [API Docs](http://localhost:5000/api-docs)
-- **Issues**: GitHub Issues
 
-## 🔄 Updates
+## 🎯 **Roadmap**
 
-### Version 1.0.0
-- Initial release
-- Complete SMS-Man replica
-- All core features implemented
-- Docker deployment ready
-- API documentation complete
+### **v1.2.0** - Enhanced Features
+- [ ] WhatsApp integration
+- [ ] Advanced analytics
+- [ ] Mobile app
+- [ ] API rate limiting
+- [ ] Webhook support
+
+### **v1.3.0** - Enterprise
+- [ ] Multi-tenancy
+- [ ] SSO integration
+- [ ] Advanced security
+- [ ] Compliance features
 
 ---
 
-**Note**: This is a complete replica of SMS-Man.com for educational and development purposes. All features are implemented to match the original service functionality.
+**Made with ❤️ by the SMS-Man Clone Team**
+
+[![GitHub stars](https://img.shields.io/github/stars/bancaflore81-oss/sms-man-clone?style=social)](https://github.com/bancaflore81-oss/sms-man-clone)
+[![GitHub forks](https://img.shields.io/github/forks/bancaflore81-oss/sms-man-clone?style=social)](https://github.com/bancaflore81-oss/sms-man-clone)
